@@ -1,10 +1,10 @@
-JavaScript Samples: Building a Client to make REST API Calls to the Qi Service.
+JavaScript Samples: Building a Client to make REST API Calls to the Sds Service.
 ===============================================================================
 
-This sample demonstrates how Qi REST APIs are invoked using JavaScript.
-By examining the code, you will see how to establish a connection to Qi, 
-obtain an authorization token, obtain a QiNamespace, create a QiType 
-and QiStream, and how to create, read, update, and delete values in Qi.
+This sample demonstrates how Sds REST APIs are invoked using JavaScript.
+By examining the code, you will see how to establish a connection to Sds, 
+obtain an authorization token, obtain a SdsNamespace, create a SdsType 
+and SdsStream, and how to create, read, update, and delete values in Sds.
 It has following dependencies: \* node.js, installation instructions are
 available at `node.js <https://nodejs.org/en/>`__ \* Request-Promise,
 HTTP client Request with Promises/A+ compliance.
@@ -32,7 +32,7 @@ Sample Setup
        node Sample.js
 
 7. Now open a browser client and enter the following URL to trigger the
-   Qi operations ``http://localhost:8080/``
+   Sds operations ``http://localhost:8080/``
 8. Check the console for the updates
 
 Establish a Connection
@@ -41,7 +41,7 @@ Establish a Connection
 The sample uses ``request-promise`` module to connect a service
 endpoint. Each REST API call consists of an HTTP request along with a specific URL and
 HTTP method. The URL contains the server name plus the extension
-that is specific to the call. Like all REST APIs, the Qi REST API maps
+that is specific to the call. Like all REST APIs, the Sds REST API maps
 HTTP methods to CRUD operations as shown in the following table:
 
 +---------------+------------------+--------------------+
@@ -99,9 +99,9 @@ Configure the Sample:
 
 Included in the sample there is a configuration file with placeholders 
 that need to be replaced with the proper values. They include information 
-for authentication, connecting to the Qi Service, and pointing to a namespace.
+for authentication, connecting to the Sds Service, and pointing to a namespace.
 
-The Qi Service is secured using Azure Active Directory. The sample application 
+The Sds Service is secured using Azure Active Directory. The sample application 
 is an example of a *confidential client*. Confidential clients provide a 
 application ID and secret that are authenticated against the directory. These 
 are referred to as client IDs and a client secrets, which are associated with 
@@ -122,7 +122,7 @@ ID and client secret. These must replace the corresponding  values in the sample
 configuration file. 
 
 Along with client ID and secret values, add the tenant name to the authority value 
-so authentication occurs against the correct tenant. The URL for the Qi Service 
+so authentication occurs against the correct tenant. The URL for the Sds Service 
 connection must also be changed to reflect the destination address of the requests. 
 
 Finally, a valid namespace ID for the tenant must be given as well. To create a 
@@ -151,7 +151,7 @@ authentication token. Microsoft also provides a Azure Active Directory
 Authentication Library for javascript that can be used with angular.js,
 which handles the specifics of token acquisition, caching, and refresh.
 
-During initialization, ``QiClient`` sets the QiServerUrl. Then, the
+During initialization, ``SdsClient`` sets the SdsServerUrl. Then, the
 first step is to get an authentication token by calling,
 
 .. code:: javascript
@@ -159,7 +159,7 @@ first step is to get an authentication token by calling,
     this.getToken(authItems)
 
 The token received from ``getToken`` is included in the headers of each
-Qi REST API request:
+Sds REST API request:
 
 .. code:: javascript
 
@@ -202,39 +202,39 @@ calls):
 
     var getTokenSuccess = client.getToken(authItems)
                                         .catch(function(err){logError(err)});
-    var createTypeSuccess = getTokenSuccess.then(...<Qi REST call to create a type>...)
+    var createTypeSuccess = getTokenSuccess.then(...<Sds REST call to create a type>...)
 
 In the above snippet, the type creation method is called only if token
 acquisition was successful. This is not mandatory for interaction with
-the Qi service - the type creation call could be attempted regardless of
-token acquisition. A call to the Qi service with a missing or incorrect
+the Sds service - the type creation call could be attempted regardless of
+token acquisition. A call to the Sds service with a missing or incorrect
 token will return with an Unauthorized status code.
 
-Create a QiType
+Create a SdsType
 ---------------
 
-To use Qi, you define QiTypes that describe the kinds of data you want
-to store in QiStreams. QiTypes are the model that define QiStreams.
-QiTypes can define simple atomic types, such as integers, floats, or
-strings, or they can define complex types by grouping other QiTypes. For
-more information about QiTypes, refer to the `Qi
+To use Sds, you define SdsTypes that describe the kinds of data you want
+to store in SdsStreams. SdsTypes are the model that define SdsStreams.
+SdsTypes can define simple atomic types, such as integers, floats, or
+strings, or they can define complex types by grouping other SdsTypes. For
+more information about SdsTypes, refer to the `Sds
 documentation <https://cloud.osisoft.com/documentation>`__.
 
-In the sample code, the QiType representing WaveData is defined in the 
+In the sample code, the SdsType representing WaveData is defined in the 
 Sample.js. WaveData contains properties of integer and double atomic types. 
-The constructions begins by defining a base QiType for each atomic type and then defining
+The constructions begins by defining a base SdsType for each atomic type and then defining
 Properties of those atomic types.
 
 .. code:: javascript
 
-    // define basic QiTypes
-    var doubleType = new qiObjs.QiType({ "Id": "doubleType", "QiTypeCode": qiObjs.qiTypeCode.Double });
-    var intType = new qiObjs.QiType({ "Id": "intType", "QiTypeCode": qiObjs.qiTypeCode.Int32 });
+    // define basic SdsTypes
+    var doubleType = new qiObjs.SdsType({ "Id": "doubleType", "SdsTypeCode": qiObjs.qiTypeCode.Double });
+    var intType = new qiObjs.SdsType({ "Id": "intType", "SdsTypeCode": qiObjs.qiTypeCode.Int32 });
 
     // define properties
-    var orderProperty = new qiObjs.QiTypeProperty({ "Id": "Order", "QiType": intType, "IsKey": true });
+    var orderProperty = new qiObjs.SdsTypeProperty({ "Id": "Order", "SdsType": intType, "IsKey": true });
 
-A QiType can be created by a POST request as follows:
+An SdsType can be created by a POST request as follows:
 
 .. code:: javascript
 
@@ -245,23 +245,23 @@ A QiType can be created by a POST request as follows:
                     body : JSON.stringify(wave).toString()
                 });
 
--  Returns the QiType object in a json format
--  If a type with the same Id exists, url path of the existing Qi type
+-  Returns the SdsType object in a json format
+-  If a type with the same Id exists, url path of the existing Sds type
    is returned
--  QiType object is passed in json format
+-  SdsType object is passed in json format
 
-Create a QiStream
+Create a SdsStream
 -----------------
 
-An ordered series of events is stored in a QiStream. All you have to do
-is create a local QiStream instance, give it an Id, assign it a type,
-and submit it to the Qi service. You may optionally assign a
-QiStreamBehavior to the stream. The value of the ``TypeId`` property is
-the value of the QiType ``Id`` property.
+An ordered series of events is stored in a SdsStream. All you have to do
+is create a local SdsStream instance, give it an Id, assign it a type,
+and submit it to the Sds service. You may optionally assign a
+SdsStreamBehavior to the stream. The value of the ``TypeId`` property is
+the value of the SdsType ``Id`` property.
 
 .. code:: javascript
 
-       QiStream : function(qiStream){
+       SdsStream : function(qiStream){
             this.Id = qiStream.Id;
             this.Name = qiStream.Name;
             this.Description = qiStream.Description;
@@ -271,7 +271,7 @@ the value of the QiType ``Id`` property.
             }
         }
 
-The local QiStream can be created in the Qi service by a POST request as
+The local SdsStream can be created in the Sds service by a POST request as
 follows:
 
 .. code:: javascript
@@ -283,13 +283,13 @@ follows:
             body : JSON.stringify(qiStream).toString()
         });
 
--  QiStream object is passed in json format
+-  SdsStream object is passed in json format
 
 Create and Insert Values into the Stream
 ----------------------------------------
 
 A single event is a data point in the stream. An event object cannot be
-empty and should have at least the key value of the Qi type for the
+empty and should have at least the key value of the Sds type for the
 event. Events are passed in json format.
 
 An event can be created using the following POST request:
@@ -320,19 +320,19 @@ and the url for POST call varies:
                 body : JSON.stringify(events)
             });
 
-The Qi REST API provides many more types of data insertion calls beyond
+The Sds REST API provides many more types of data insertion calls beyond
 those demonstrated in this application. Go to the 
-`Qi documentation<https://cloud.osisoft.com/documentation>`_ for more information
+`Sds documentation<https://cloud.osisoft.com/documentation>`_ for more information
 on available REST API calls.
 
 Retrieve Values from a Stream
 -----------------------------
 
-There are many methods in the Qi REST API allowing for the retrieval of
+There are many methods in the Sds REST API allowing for the retrieval of
 events from a stream. The retrieval methods take string type start and
 end values; in our case, these are the start and end ordinal indices
 expressed as strings. The index values must
-capable of conversion to the type of the index assigned in the QiType.
+capable of conversion to the type of the index assigned in the SdsType.
 
 This sample implements only a few of the many available retrieval methods -
 getWindowValues, getRangeValues and getLastValue.
@@ -345,7 +345,7 @@ getWindowValues, getRangeValues and getLastValue.
             headers : this.getHeaders()
         });
 
--  parameters are the QiStream Id and the starting and ending index
+-  parameters are the SdsStream Id and the starting and ending index
    values for the desired window Ex: For a time index, request url
    format will be
    "/{streamId}/Data/GetWindowValues?startIndex={startTime}&endIndex={endTime}
@@ -413,7 +413,7 @@ Changing Stream Behavior
 ------------------------
 
 When retrieving a value, the behavior of a stream can be altered
-using ``QiStreamBehaviors``. A stream is updated with a behavior,
+using ``SdsStreamBehaviors``. A stream is updated with a behavior,
 which changes how "get" operations are performed when an index falls between,
 before, or after existing values. The default behavior is continuous, so
 any indices not in the stream are interpolated using the previous
@@ -421,12 +421,12 @@ and next values.
 
 In the sample, the behavior is updated to discrete, meaning that if an index
 does not correspond to a real value in the stream then ``null`` is
-returned by the Qi Service. The following shows how this is done in the
+returned by the Sds Service. The following shows how this is done in the
 code:
 
 .. code:: javascript
 
-        var behavior = new qiObjs.QiBehavior({"Mode": qiObjs.qiStreamMode.StepWiseContinuousLeading;});
+        var behavior = new qiObjs.SdsBehavior({"Mode": qiObjs.qiStreamMode.StepWiseContinuousLeading;});
         behavior.Id = "evtStreamStepLeading";
 		sampleBehavior.ExtrapolationMode = qiObjs.qiBoundaryType.Continuous;
         ...
@@ -440,30 +440,30 @@ The sample repeats the call to ``getRangeValues`` with the same
 parameters as before, allowing you to compare the values of the event at
 ``Order=1``.
 
-QiViews
+SdsViews
 -------
 
-A QiView provides a way to map Stream data requests from one data type 
-to another. You can apply a View to any read or GET operation. QiView 
+An SdsView provides a way to map Stream data requests from one data type 
+to another. You can apply a View to any read or GET operation. SdsView 
 is used to specify the mapping between source and target types.
 
-Qi attempts to determine how to map Properties from the source to the 
+Sds attempts to determine how to map Properties from the source to the 
 destination. When the mapping is straightforward, such as when 
 the properties are in the same position and of the same data type, 
-or when the properties have the same name, Qi will map the properties automatically.
+or when the properties have the same name, Sds will map the properties automatically.
 
 .. code:: javascript
 
       client.getRangeValues(tenantId, sampleNamespaceId, sampleStreamId, "1", 0, 3, "False", qiObjs.qiBoundaryType.ExactOrCalculated, autoView.Id)
 
-To map a property that is beyond the ability of Qi to map on its own, 
-you should define a QiViewProperty and add it to the QiView’s Properties collection.
+To map a property that is beyond the ability of Sds to map on its own, 
+you should define a SdsViewProperty and add it to the SdsView’s Properties collection.
 
 .. code:: javascript
 
-        var sinViewProperty = new qiObjs.QiViewProperty({ "SourceId": "Sin", "TargetId": "SinInt" });
+        var sinViewProperty = new qiObjs.SdsViewProperty({ "SourceId": "Sin", "TargetId": "SinInt" });
         ...
-        var manualView = new qiObjs.QiView({
+        var manualView = new qiObjs.SdsView({
             "Id": manualViewId, 
             "Name": "MapSampleTypeToATargetType",     
             "TargetTypeId" : targetIntegerTypeId,
@@ -471,12 +471,12 @@ you should define a QiViewProperty and add it to the QiView’s Properties colle
             "Properties" : [sinViewProperty, cosViewProperty, tanViewProperty]
         });
 
-QiViewMap
+SdsViewMap
 ---------
 
-When a QiView is added, Qi defines a plan mapping. Plan details are retrieved as a QiViewMap. 
-The QiViewMap provides a detailed Property-by-Property definition of the mapping.
-The QiViewMap cannot be written, it can only be retrieved from Qi.
+When a SdsView is added, Sds defines a plan mapping. Plan details are retrieved as a SdsViewMap. 
+The SdsViewMap provides a detailed Property-by-Property definition of the mapping.
+The SdsViewMap cannot be written, it can only be retrieved from Sds.
 
 .. code:: javascript
 

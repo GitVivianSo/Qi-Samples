@@ -2,12 +2,12 @@ module.exports = {
 
     //VERY IMPORTANT: edit the following values to reflect the authorization items you were given
     authItems: {
-        'resource': "https://qihomeprod.onmicrosoft.com/ocsapi",
-        'authority': "https://login.windows.net/<REPLACE_WITH_TENANT_ID>.onmicrosoft.com/oauth2/token",
-        'clientId': "REPLACE_WITH_APPLICATION_IDENTIFIER",
-        'clientSecret': "REPLACE_WITH_APPLICATION_SECRET"
+        'resource': "https://pihomemain.onmicrosoft.com/ocsapi",
+        'authority': "https://login.windows.net/FluxTesting.onmicrosoft.com/oauth2/token",
+        'clientId': "705ef260-1039-44a6-956c-5b7677931804",
+        'clientSecret': "FFNXAOjSLMgmMo7izR6e18lOU/M0X9zzcg7aM6AScBM="
     },
-    qiServerUrl: "https://dat-a.osisoft.com",
-    tenantId: "REPLACE_WITH_TENANT_ID",
-    namespaceId: "PLACEHOLDER_REPLACE_WITH_NAMESPACE_ID"
+    sdsServerUrl: "https://historiandev2.osipi.com",
+    tenantId: "b699ae77-0b01-4053-acba-5dfe4b39af88",
+    namespaceId: "fluxtesting"
 }
