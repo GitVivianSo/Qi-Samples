@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { QiBoundaryType, QiRestService } from '../qi.rest.service'
-import { QiType, QiStream, QiTypeProperty, QiTypeCode, QiStreamBehavior,
-  QiStreamMode, QiView, QiViewProperty, QiViewMap} from '../qi.rest.service'
+import { SdsBoundaryType, SdsRestService, SdsStreamPropertyOverride } from '../sds.rest.service'
+import { SdsType, SdsStream, SdsTypeProperty, SdsTypeCode,
+  SdsStreamMode, SdsView, SdsViewProperty, SdsViewMap} from '../sds.rest.service'
 
 const streamId = 'WaveDataStream';
 const typeId = 'WaveDataType';
@@ -49,11 +49,11 @@ class  WaveDataInteger {
   styleUrls: ['./datasrc.component.css']
 })
 export class DatasrcComponent {
-  stream: QiStream;
+  stream: SdsStream;
   events: WaveData[];
   targetEvents: WaveDataTarget[];
   integerEvents: WaveDataInteger[];
-  viewMap: QiViewMap;
+  viewMap: SdsViewMap;
   metadataMap: Map<string, string>;
   hasEvents: boolean;
   hasView1Events: boolean;
@@ -81,189 +81,189 @@ export class DatasrcComponent {
   button18Message: string;
   button19Message: string;
 
-  constructor(private qiService: QiRestService) {
+  constructor(private sdsService: SdsRestService) {
     this.hasEvents = false;
   }
 
   buildWaveDataType() {
-    const doubleType = new QiType();
+    const doubleType = new SdsType();
     doubleType.Id = 'doubleType';
-    doubleType.QiTypeCode = QiTypeCode.Double;
+    doubleType.SdsTypeCode = SdsTypeCode.Double;
 
-    const intType = new QiType();
+    const intType = new SdsType();
     intType.Id = 'intType';
-    intType.QiTypeCode = QiTypeCode.Int32;
+    intType.SdsTypeCode = SdsTypeCode.Int32;
 
-    const orderProperty = new QiTypeProperty();
+    const orderProperty = new SdsTypeProperty();
     orderProperty.Id = 'Order';
-    orderProperty.QiType = intType;
+    orderProperty.SdsType = intType;
     orderProperty.IsKey = true;
 
-    const radiansProperty = new QiTypeProperty();
+    const radiansProperty = new SdsTypeProperty();
     radiansProperty.Id = 'Radians';
-    radiansProperty.QiType = doubleType;
+    radiansProperty.SdsType = doubleType;
 
-    const tauProperty = new QiTypeProperty();
+    const tauProperty = new SdsTypeProperty();
     tauProperty.Id = 'Tau';
-    tauProperty.QiType = doubleType;
+    tauProperty.SdsType = doubleType;
 
-    const sinProperty = new QiTypeProperty();
+    const sinProperty = new SdsTypeProperty();
     sinProperty.Id = 'Sin';
-    sinProperty.QiType = doubleType;
+    sinProperty.SdsType = doubleType;
 
-    const cosProperty = new QiTypeProperty();
+    const cosProperty = new SdsTypeProperty();
     cosProperty.Id = 'Cos';
-    cosProperty.QiType = doubleType;
+    cosProperty.SdsType = doubleType;
 
-    const tanProperty = new QiTypeProperty();
+    const tanProperty = new SdsTypeProperty();
     tanProperty.Id = 'Tan';
-    tanProperty.QiType = doubleType;
+    tanProperty.SdsType = doubleType;
 
-    const sinhProperty = new QiTypeProperty();
+    const sinhProperty = new SdsTypeProperty();
     sinhProperty.Id = 'Sinh';
-    sinhProperty.QiType = doubleType;
+    sinhProperty.SdsType = doubleType;
 
-    const coshProperty = new QiTypeProperty();
+    const coshProperty = new SdsTypeProperty();
     coshProperty.Id = 'Cosh';
-    coshProperty.QiType = doubleType;
+    coshProperty.SdsType = doubleType;
 
-    const tanhProperty = new QiTypeProperty();
+    const tanhProperty = new SdsTypeProperty();
     tanhProperty.Id = 'Tanh';
-    tanhProperty.QiType = doubleType;
+    tanhProperty.SdsType = doubleType;
 
-    const waveDataType = new QiType();
+    const waveDataType = new SdsType();
     waveDataType.Id = typeId;
     waveDataType.Name = 'WaveDataType_AngularSample';
-    waveDataType.Description = 'This is a sample QiType for storing WaveData events';
+    waveDataType.Description = 'This is a sample SdsType for storing WaveData events';
     waveDataType.Properties = [orderProperty, radiansProperty, tauProperty, sinProperty,
       cosProperty, tanProperty, sinhProperty, coshProperty, tanhProperty];
-    waveDataType.QiTypeCode = QiTypeCode.Object;
+    waveDataType.SdsTypeCode = SdsTypeCode.Object;
 
     return waveDataType;
   }
 
   buildWaveDataTargetType() {
-    const doubleType = new QiType();
+    const doubleType = new SdsType();
     doubleType.Id = 'doubleType';
-    doubleType.QiTypeCode = QiTypeCode.Double;
+    doubleType.SdsTypeCode = SdsTypeCode.Double;
 
-    const intType = new QiType();
+    const intType = new SdsType();
     intType.Id = 'intType';
-    intType.QiTypeCode = QiTypeCode.Int32;
+    intType.SdsTypeCode = SdsTypeCode.Int32;
 
-    const orderTargetProperty = new QiTypeProperty();
+    const orderTargetProperty = new SdsTypeProperty();
     orderTargetProperty.Id = 'OrderTarget';
-    orderTargetProperty.QiType = intType;
+    orderTargetProperty.SdsType = intType;
     orderTargetProperty.IsKey = true;
 
-    const radiansTargetProperty = new QiTypeProperty();
+    const radiansTargetProperty = new SdsTypeProperty();
     radiansTargetProperty.Id = 'RadiansTarget';
-    radiansTargetProperty.QiType = doubleType;
+    radiansTargetProperty.SdsType = doubleType;
 
-    const tauTargetProperty = new QiTypeProperty();
+    const tauTargetProperty = new SdsTypeProperty();
     tauTargetProperty.Id = 'TauTarget';
-    tauTargetProperty.QiType = doubleType;
+    tauTargetProperty.SdsType = doubleType;
 
-    const sinTargetProperty = new QiTypeProperty();
+    const sinTargetProperty = new SdsTypeProperty();
     sinTargetProperty.Id = 'SinTarget';
-    sinTargetProperty.QiType = doubleType;
+    sinTargetProperty.SdsType = doubleType;
 
-    const cosTargetProperty = new QiTypeProperty();
+    const cosTargetProperty = new SdsTypeProperty();
     cosTargetProperty.Id = 'CosTarget';
-    cosTargetProperty.QiType = doubleType;
+    cosTargetProperty.SdsType = doubleType;
 
-    const tanTargetProperty = new QiTypeProperty();
+    const tanTargetProperty = new SdsTypeProperty();
     tanTargetProperty.Id = 'TanTarget';
-    tanTargetProperty.QiType = doubleType;
+    tanTargetProperty.SdsType = doubleType;
 
-    const sinhTargetProperty = new QiTypeProperty();
+    const sinhTargetProperty = new SdsTypeProperty();
     sinhTargetProperty.Id = 'SinhTarget';
-    sinhTargetProperty.QiType = doubleType;
+    sinhTargetProperty.SdsType = doubleType;
 
-    const coshTargetProperty = new QiTypeProperty();
+    const coshTargetProperty = new SdsTypeProperty();
     coshTargetProperty.Id = 'CoshTarget';
-    coshTargetProperty.QiType = doubleType;
+    coshTargetProperty.SdsType = doubleType;
 
-    const tanhTargetProperty = new QiTypeProperty();
+    const tanhTargetProperty = new SdsTypeProperty();
     tanhTargetProperty.Id = 'TanhTarget';
-    tanhTargetProperty.QiType = doubleType;
+    tanhTargetProperty.SdsType = doubleType;
 
-    const waveDataTargetType = new QiType();
+    const waveDataTargetType = new SdsType();
     waveDataTargetType.Id = targetTypeId;
     waveDataTargetType.Name = 'WaveDataTargetType_AngularSample';
-    waveDataTargetType.Description = 'This is a sample QiType for storing WaveDataTarget events';
+    waveDataTargetType.Description = 'This is a sample SdsType for storing WaveDataTarget events';
     waveDataTargetType.Properties = [orderTargetProperty, radiansTargetProperty, tauTargetProperty, sinTargetProperty,
       cosTargetProperty, tanTargetProperty, sinhTargetProperty, coshTargetProperty, tanhTargetProperty];
-    waveDataTargetType.QiTypeCode = QiTypeCode.Object;
+    waveDataTargetType.SdsTypeCode = SdsTypeCode.Object;
 
     return waveDataTargetType;
   }
 
   buildWaveDataIntegerType() {
 
-    const intType = new QiType();
+    const intType = new SdsType();
     intType.Id = 'intType';
-    intType.QiTypeCode = QiTypeCode.Int32;
+    intType.SdsTypeCode = SdsTypeCode.Int32;
 
-    const orderTargetProperty = new QiTypeProperty();
+    const orderTargetProperty = new SdsTypeProperty();
     orderTargetProperty.Id = 'OrderTarget';
-    orderTargetProperty.QiType = intType;
+    orderTargetProperty.SdsType = intType;
     orderTargetProperty.IsKey = true;
 
-    const sinIntProperty = new QiTypeProperty();
+    const sinIntProperty = new SdsTypeProperty();
     sinIntProperty.Id = 'SinhInt';
-    sinIntProperty.QiType = intType;
+    sinIntProperty.SdsType = intType;
 
-    const cosIntProperty = new QiTypeProperty();
+    const cosIntProperty = new SdsTypeProperty();
     cosIntProperty.Id = 'CoshInt';
-    cosIntProperty.QiType = intType;
+    cosIntProperty.SdsType = intType;
 
-    const tanIntProperty = new QiTypeProperty();
+    const tanIntProperty = new SdsTypeProperty();
     tanIntProperty.Id = 'TanhInt';
-    tanIntProperty.QiType = intType;
+    tanIntProperty.SdsType = intType;
 
 
-    const waveDataIntType = new QiType();
+    const waveDataIntType = new SdsType();
     waveDataIntType.Id = targetIntTypeId;
     waveDataIntType.Name = 'WaveDataIntegerType_AngularSample';
-    waveDataIntType.Description = 'This is a sample QiType for storing WaveDataInteger events';
+    waveDataIntType.Description = 'This is a sample SdsType for storing WaveDataInteger events';
     waveDataIntType.Properties = [orderTargetProperty, sinIntProperty, cosIntProperty, tanIntProperty];
-    waveDataIntType.QiTypeCode = QiTypeCode.Object;
+    waveDataIntType.SdsTypeCode = SdsTypeCode.Object;
 
     return waveDataIntType;
   }
 
   buildAutoView() {
-        const autoView = new QiView();
+        const autoView = new SdsView();
         autoView.Id = autoViewId;
         autoView.Name = 'WaveData_AutoView';
-        autoView.Description = 'This view uses Qi Types of the same shape and will map automatically.'
+        autoView.Description = 'This view uses Sds Types of the same shape and will map automatically.'
         autoView.SourceTypeId = typeId;
         autoView.TargetTypeId = targetTypeId;
         return autoView;
       }
 
   buildManualView() {
-        const manualView = new QiView();
+        const manualView = new SdsView();
         manualView.Id = manualViewId;
         manualView.Name = 'WaveData_AutoView';
-        manualView.Description = 'This view uses Qi Types of different shapes, mappings are made explicitly with QiViewProperties.'
+        manualView.Description = 'This view uses Sds Types of different shapes, mappings are made explicitly with SdsViewProperties.'
         manualView.SourceTypeId = typeId;
         manualView.TargetTypeId = targetIntTypeId;
 
-        const viewProperty0 = new QiViewProperty();
+        const viewProperty0 = new SdsViewProperty();
         viewProperty0.SourceId = 'Order';
         viewProperty0.TargetId = 'OrderTarget';
 
-        const viewProperty1 = new QiViewProperty();
+        const viewProperty1 = new SdsViewProperty();
         viewProperty1.SourceId = 'Sinh';
         viewProperty1.TargetId = 'SinhInt';
 
-        const viewProperty2 = new QiViewProperty();
+        const viewProperty2 = new SdsViewProperty();
         viewProperty2.SourceId = 'Cosh';
         viewProperty2.TargetId = 'CoshInt';
 
-        const viewProperty3 = new QiViewProperty();
+        const viewProperty3 = new SdsViewProperty();
         viewProperty3.SourceId = 'Tanh';
         viewProperty3.TargetId = 'TanhInt';
 
@@ -290,7 +290,7 @@ export class DatasrcComponent {
 
   createType() {
     const type = this.buildWaveDataType();
-    this.qiService.createType(type).subscribe(res => {
+    this.sdsService.createType(type).subscribe(res => {
       this.button1Message = res.status;
     },
     err => {
@@ -299,10 +299,10 @@ export class DatasrcComponent {
   }
 
   createStream() {
-    this.stream = new QiStream();
+    this.stream = new SdsStream();
     this.stream.Id = streamId;
     this.stream.TypeId = typeId;
-    this.qiService.createStream(this.stream)
+    this.sdsService.createStream(this.stream)
     .subscribe(res => {
         this.button2Message = res.status;
       },
@@ -312,7 +312,7 @@ export class DatasrcComponent {
   }
 
   writeSingleWaveDataEvent() {
-    this.qiService.insertValue(streamId, this.newWaveDataEvent(0, 2.5, 2)).subscribe(res => {
+    this.sdsService.insertValue(streamId, this.newWaveDataEvent(0, 2.5, 2)).subscribe(res => {
       this.button3Message = res.status;
     },
     err => {
@@ -326,7 +326,7 @@ export class DatasrcComponent {
       list.push(this.newWaveDataEvent(i, 12, 24));
     }
 
-    this.qiService.insertValues(streamId, list).subscribe(res => {
+    this.sdsService.insertValues(streamId, list).subscribe(res => {
       this.button3Message = res.status;
     },
     err => {
@@ -336,7 +336,7 @@ export class DatasrcComponent {
 
   retrieveWaveDataEvents() {
     this.hasEvents = false;
-    this.qiService.getRangeValues(streamId, '1', 40, QiBoundaryType.ExactOrCalculated)
+    this.sdsService.getRangeValues(streamId, '1', 40, SdsBoundaryType.ExactOrCalculated)
       .map(res => res.json())
       .subscribe(res => {
         this.events = res as WaveData[];
@@ -353,7 +353,7 @@ export class DatasrcComponent {
     for (let i = 0; i < 40; i += 2) {
       list.push(this.newWaveDataEvent(i, 2.5, 5));
     }
-    this.qiService.updateValues(streamId, list).subscribe(res => {
+    this.sdsService.updateValues(streamId, list).subscribe(res => {
       this.button14Message = res.status;
     },
     err => {
@@ -366,7 +366,7 @@ export class DatasrcComponent {
     for (let i = 0; i < 40; i += 2) {
       list.push(this.newWaveDataEvent(i, 1.5, 10));
     }
-    this.qiService.replaceValues(streamId, list).subscribe(res => {
+    this.sdsService.replaceValues(streamId, list).subscribe(res => {
       this.button15Message = res.status;
     },
     err => {
@@ -374,25 +374,22 @@ export class DatasrcComponent {
     });
   }
 
-  createBehaviorAndUpdateStream() {
-    const behavior = new QiStreamBehavior();
-    behavior.Id = behaviorId;
-    behavior.Name = 'SampleBehavior';
-    behavior.Mode = QiStreamMode.Discrete;
-    this.qiService.createBehavior(behavior).subscribe(() => {
-      this.stream.BehaviorId = behaviorId;
-      this.qiService.updateStream(this.stream).subscribe(res => {
+  createPropertyOverrideAndUpdateStream() {
+    const propertyOverride = new SdsStreamPropertyOverride();
+    propertyOverride.SdsTypePropertyId = "Radians";
+    propertyOverride.InterpolationModeOverride = SdsStreamMode.Discrete;
+      this.stream.PropertyOverrides = [propertyOverride];
+      this.sdsService.updateStream(this.stream).subscribe(res => {
         this.button5Message = res.status;
       },
       err => {
         this.button5Message = err;
-      });
-    })
-  }
+      });    
+   }
 
   createAutoviewTargetType() {
     const type = this.buildWaveDataTargetType();
-    this.qiService.createType(type).subscribe(res => {
+    this.sdsService.createType(type).subscribe(res => {
       this.button6Message = res.status;
     },
     err => {
@@ -402,7 +399,7 @@ export class DatasrcComponent {
 
   createAutoview() {
     const view = this.buildAutoView();
-    this.qiService.createView(view).subscribe(res => {
+    this.sdsService.createView(view).subscribe(res => {
       this.button7Message = res.status;
     },
     err => {
@@ -412,7 +409,7 @@ export class DatasrcComponent {
 
   retrieveWaveDataEventsAutoview() {
     this.hasView1Events = false;
-    this.qiService.getRangeValues(streamId, '1', 5, QiBoundaryType.ExactOrCalculated, autoViewId)
+    this.sdsService.getRangeValues(streamId, '1', 5, SdsBoundaryType.ExactOrCalculated, autoViewId)
       .map(res => res.json())
       .subscribe(res => {
         this.targetEvents = res as WaveDataTarget[];
@@ -424,16 +421,16 @@ export class DatasrcComponent {
       });
   }
 
-  createQiViewPropertiesAndManualType() {
+  createSdsViewPropertiesAndManualType() {
     const type = this.buildWaveDataIntegerType();
-    this.qiService.createType(type).subscribe(res => {
+    this.sdsService.createType(type).subscribe(res => {
       this.button9Message = res.status;
     },
     err => {
       this.button9Message = err;
     });
     const view = this.buildManualView();
-    this.qiService.createView(view).subscribe(res => {
+    this.sdsService.createView(view).subscribe(res => {
       this.button9Message = res.status;
     },
     err => {
@@ -443,7 +440,7 @@ export class DatasrcComponent {
 
   retrieveWaveDataEventsManualview() {
     this.hasView2Events = false;
-    this.qiService.getRangeValues(streamId, '3', 5, QiBoundaryType.ExactOrCalculated, manualViewId)
+    this.sdsService.getRangeValues(streamId, '3', 5, SdsBoundaryType.ExactOrCalculated, manualViewId)
       .map(res => res.json())
       .subscribe(res => {
         this.integerEvents = res as WaveDataInteger[];
@@ -455,13 +452,13 @@ export class DatasrcComponent {
       });
   }
 
-  getQiViewMap() {
-    this.qiService.getViewMap(manualViewId)
+  getSdsViewMap() {
+    this.sdsService.getViewMap(manualViewId)
       .map(res => res.json())
       .subscribe(res => {
-        this.viewMap = res as QiViewMap;
+        this.viewMap = res as SdsViewMap;
         this.hasMapProperties = true;
-      this.button11Message = `QiViewMap`
+      this.button11Message = `SdsViewMap`
     },
       err => {
         this.button11Message = err;
@@ -471,14 +468,14 @@ export class DatasrcComponent {
   createTagsAndMetadata() {
     const tags = [ 'waves', 'periodic', '2018', 'validated' ];
     const metadata = {Region: 'North America', Country: 'Canada', Province: 'Quebec'};
-    this.qiService.createTags(streamId, tags)
+    this.sdsService.createTags(streamId, tags)
     .subscribe(res => {
       this.button16Message = res.status;
     },
     err => {
       this.button16Message = err;
     });
-    this.qiService.createMetadata(streamId, metadata)
+    this.sdsService.createMetadata(streamId, metadata)
     .subscribe(res => {
       this.button16Message = res.status;
     },
@@ -488,7 +485,7 @@ export class DatasrcComponent {
   }
 
   getAndPrintTags() {
-    this.qiService.getTags(streamId)
+    this.sdsService.getTags(streamId)
       .map(res => res.json())
       .subscribe(res => {
         const tags = res as Array<string>;
@@ -505,7 +502,7 @@ export class DatasrcComponent {
   }
 
   getAndPrintMetadata() {
-    this.qiService.getMetadata(streamId)
+    this.sdsService.getMetadata(streamId)
       .map(res => res.json())
       .subscribe(res => {
         this.metadataMap = res as Map<string, string>;
@@ -516,12 +513,12 @@ export class DatasrcComponent {
       });
   }
 
-  searchForQiStream() {
-    this.qiService.getStreams('periodic')
+  searchForSdsStream() {
+    this.sdsService.getStreams('periodic')
       .map(res => res.json())
       .subscribe(res => {
         let result = 'Streams associated with "periodic": ';
-        const streams = res as Array<QiStream>;
+        const streams = res as Array<SdsStream>;
         if (streams.length > 0) {
           for (let i = 0; i < streams.length; i++) {
             result += (streams[i].Id.toString() + ' ')
@@ -537,7 +534,7 @@ export class DatasrcComponent {
   }
 
   deleteAllValues() {
-    this.qiService.deleteWindowValues(streamId, '0', '200')
+    this.sdsService.deleteWindowValues(streamId, '0', '200')
       .subscribe(res => {
         this.button13Message = res.status;
     },
@@ -547,15 +544,14 @@ export class DatasrcComponent {
   }
 
   cleanup() {
-    this.qiService.deleteStream(streamId).subscribe(() => {
+    this.sdsService.deleteStream(streamId).subscribe(() => {
       // you can't delete a type/behavior if there are existing streams
       // that depend on it, so we must make sure the stream is deleted first.
-      this.qiService.deleteType(typeId).subscribe()
-      this.qiService.deleteType(targetTypeId).subscribe()
-      this.qiService.deleteType(targetIntTypeId).subscribe()
-      this.qiService.deleteView(autoViewId).subscribe()
-      this.qiService.deleteView(manualViewId).subscribe()
-      this.qiService.deleteBehavior(behaviorId).subscribe();
+      this.sdsService.deleteView(autoViewId).subscribe()
+      this.sdsService.deleteView(manualViewId).subscribe()      
+      this.sdsService.deleteType(typeId).subscribe()
+      this.sdsService.deleteType(targetTypeId).subscribe()
+      this.sdsService.deleteType(targetIntTypeId).subscribe()
     });
     this.hasEvents = false;
     this.button12Message = 'All Objects Deleted'
