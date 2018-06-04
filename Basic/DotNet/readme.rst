@@ -17,3 +17,7 @@ This sample does not make any use of OSIsoft code. Instead, raw REST
 calls are composed and submitted as in the samples for other languages.
 This sample is documented here:
 https://github.com/osisoft/Qi-Samples/blob/master/Basic/DotNet/readme_REST.rst.
+
+
+
+Added something random
